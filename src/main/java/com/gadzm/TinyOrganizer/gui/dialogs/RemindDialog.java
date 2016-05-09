@@ -1,5 +1,6 @@
-package com.gadzm.TinyOrganizer;
+package com.gadzm.TinyOrganizer.gui.dialogs;
 
+import com.gadzm.TinyOrganizer.events.Event;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 

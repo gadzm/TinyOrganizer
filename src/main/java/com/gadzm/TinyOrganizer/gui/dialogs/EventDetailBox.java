@@ -1,5 +1,6 @@
-package com.gadzm.TinyOrganizer;
+package com.gadzm.TinyOrganizer.gui.dialogs;
 
+import com.gadzm.TinyOrganizer.events.Event;
 import java.awt.Color;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
@@ -115,7 +116,7 @@ public class EventDetailBox extends JPanel {
         EventDetailBox.hideContent();
     }
 
-    static EventDetailBox getEventDetailBox(int x, int y) {
+    public static EventDetailBox getEventDetailBox(int x, int y) {
         return new EventDetailBox(x, y);
     }
 

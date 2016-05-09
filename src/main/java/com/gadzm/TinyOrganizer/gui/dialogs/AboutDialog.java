@@ -1,4 +1,4 @@
-package com.gadzm.TinyOrganizer;
+package com.gadzm.TinyOrganizer.gui.dialogs;
 
 import javax.swing.JDialog;
 import javax.swing.JFrame;

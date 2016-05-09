@@ -1,24 +1,23 @@
-package com.gadzm.TinyOrganizer;
+package com.gadzm.TinyOrganizer.calendar;
 
 public class CalendarController {
 
     private CalendarTable table;
-
-    public CalendarController(CalendarTable table) {
+    private MonthToDisplay currentMonth;
+    public CalendarController(CalendarTable table, MonthToDisplay currentMonth) {
         this.table = table;
+        this.currentMonth = currentMonth;
     }
 
-    /*
-	 * przesuniecie kalendarza o jeden miesiac 
-     */
+
     public void neighbourMonth(boolean dir) {
         this.table.clearSelection();
         if (dir) {
-            MainWindow.currentMonth.addMonth(1);
+            this.currentMonth.addMonth(1);
             this.table.updateTable();
             return;
         }
-        MainWindow.currentMonth.addMonth(-1);
+        this.currentMonth.addMonth(-1);
         this.table.updateTable();
     }
 
@@ -28,11 +27,11 @@ public class CalendarController {
     public void neighbourYear(boolean dir) {
         this.table.clearSelection();
         if (dir) {
-            MainWindow.currentMonth.addYear(1);
+           this.currentMonth.addYear(1);
             this.table.updateTable();
             return;
         }
-        MainWindow.currentMonth.addYear(-1);
+        this.currentMonth.addYear(-1);
         this.table.updateTable();
     }
 }

@@ -1,5 +1,6 @@
-package com.gadzm.TinyOrganizer;
+package com.gadzm.TinyOrganizer.gui.dialogs;
 
+import com.gadzm.TinyOrganizer.events.Event;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.MouseAdapter;
@@ -24,7 +25,7 @@ public class EventBox extends JLabel {
     private SimpleDateFormat startFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
     private SimpleDateFormat endFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
 
-    EventBox(Event event, int tableHeight, int tableWidth) {
+    public EventBox(Event event, int tableHeight, int tableWidth) {
         this.tableHeight = tableHeight;
         this.tableWidth = tableWidth;
         this.event = event;

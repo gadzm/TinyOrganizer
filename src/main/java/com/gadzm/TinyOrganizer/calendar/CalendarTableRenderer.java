@@ -1,5 +1,6 @@
-package com.gadzm.TinyOrganizer;
+package com.gadzm.TinyOrganizer.calendar;
 
+import com.gadzm.TinyOrganizer.events.EventContainer;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;

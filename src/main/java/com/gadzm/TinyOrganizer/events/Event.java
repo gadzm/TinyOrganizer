@@ -1,4 +1,4 @@
-package com.gadzm.TinyOrganizer;
+package com.gadzm.TinyOrganizer.events;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

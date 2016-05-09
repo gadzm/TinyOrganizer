@@ -1,11 +1,11 @@
-package com.gadzm.TinyOrganizer;
+package com.gadzm.TinyOrganizer.calendar;
 
 import java.awt.Font;
 import javax.swing.JLayeredPane;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
 
-class DailyTable extends JTable {
+public class DailyTable extends JTable {
 
     /**
      *

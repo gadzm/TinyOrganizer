@@ -1,5 +1,18 @@
-package com.gadzm.TinyOrganizer;
+package com.gadzm.TinyOrganizer.gui.window;
 
+import com.gadzm.TinyOrganizer.calendar.CalendarController;
+import com.gadzm.TinyOrganizer.calendar.CalendarTable;
+import com.gadzm.TinyOrganizer.calendar.DailyTable;
+import com.gadzm.TinyOrganizer.events.EventsReminder;
+import com.gadzm.TinyOrganizer.calendar.EventsTableModel;
+import com.gadzm.TinyOrganizer.calendar.MonthToDisplay;
+import com.gadzm.TinyOrganizer.gui.dialogs.EventDetailBox;
+import com.gadzm.TinyOrganizer.gui.dialogs.EventBox;
+import com.gadzm.TinyOrganizer.gui.dialogs.RemoveEventsDialog;
+import com.gadzm.TinyOrganizer.gui.dialogs.AddEventDialog;
+import com.gadzm.TinyOrganizer.gui.dialogs.AboutDialog;
+import com.gadzm.TinyOrganizer.events.Event;
+import com.gadzm.TinyOrganizer.events.EventContainer;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -43,7 +56,7 @@ public class MainWindow extends JFrame {
 
     private static final long serialVersionUID = 1L;
     private final List<EventBox> eventOnDay = new ArrayList<EventBox>();
-    static MonthToDisplay currentMonth = new MonthToDisplay();
+    private final static MonthToDisplay currentMonth = new MonthToDisplay();
     private final SimpleDateFormat calendarDateFormat = new SimpleDateFormat("MMM yyyy");
     private JPanel panelCalendar,
             panelEventTable;
@@ -233,7 +246,7 @@ public class MainWindow extends JFrame {
     }
 
     private void showCalendarDate() {
-        this.labelCurrentMonth.setText(WordUtils.capitalizeFully(this.calendarDateFormat.format((MainWindow.currentMonth.getDate(1)).getTime())));
+        this.labelCurrentMonth.setText(WordUtils.capitalizeFully(this.calendarDateFormat.format((currentMonth.getDate(1)).getTime())));
     }
 
     private void showSaveDialog() {
@@ -284,7 +297,7 @@ public class MainWindow extends JFrame {
 
     private void showEventsOnDay(int selecetedCell) {
         clearEventBoxes();
-        this.selecetedDate = MainWindow.currentMonth.getDate(selecetedCell);
+        this.selecetedDate = currentMonth.getDate(selecetedCell);
         if (EventContainer.GetInstance().isDayWithEvent(selecetedDate)) {
             createEventBoxes();
         }
@@ -324,7 +337,8 @@ public class MainWindow extends JFrame {
     }
 
     private void createCalendar() {
-        calendarTable = new CalendarTable();
+        calendarTable = new CalendarTable(this.currentMonth);
+        
         calendarScrollPane.setViewportView(calendarTable);
         calendarTable.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
@@ -343,7 +357,7 @@ public class MainWindow extends JFrame {
     }
 
     private void createCalendarNavigation() {
-        final CalendarController calContr = new CalendarController(this.calendarTable);
+        final CalendarController calContr = new CalendarController(this.calendarTable, this.currentMonth);
 
         btnNextYear = new JButton(">>");
         btnNextYear.setBounds(330, 18, 49, 23);
@@ -439,5 +453,9 @@ public class MainWindow extends JFrame {
         } catch (UnsupportedLookAndFeelException e) {
         } catch (Exception e) {
         }
+    }
+    
+    public static MonthToDisplay getCurrentMonth(){
+        return currentMonth;
     }
 }

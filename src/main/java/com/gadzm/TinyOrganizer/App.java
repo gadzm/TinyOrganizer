@@ -1,5 +1,6 @@
 package com.gadzm.TinyOrganizer;
 
+import com.gadzm.TinyOrganizer.gui.window.MainWindow;
 import java.awt.EventQueue;
 
 public class App {

@@ -1,20 +1,23 @@
-package com.gadzm.TinyOrganizer;
+package com.gadzm.TinyOrganizer.calendar;
 
 import javax.swing.JTable;
 
 public class CalendarTable extends JTable {
 
+    MonthToDisplay currentMonth;
     /**
      *
      */
     private static final long serialVersionUID = 1L;
 
-    public CalendarTable() {
-        setModel(new CalendarTableModel(MainWindow.currentMonth));
+    public CalendarTable(MonthToDisplay currentMonth) {
+        this.currentMonth = currentMonth;
+        
+        setModel(new CalendarTableModel(this.currentMonth));
         setRowSelectionAllowed(false);
         setRowHeight(30);
         setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        CalendarTableRenderer renderer = new CalendarTableRenderer(MainWindow.currentMonth);
+        CalendarTableRenderer renderer = new CalendarTableRenderer(currentMonth);
         try {
             setDefaultRenderer(Class.forName("java.lang.Integer"), renderer);
         } catch (ClassNotFoundException e1) {
@@ -26,7 +29,7 @@ public class CalendarTable extends JTable {
     }
 
     public void updateTable() {
-        setModel(new CalendarTableModel(MainWindow.currentMonth));
+        setModel(new CalendarTableModel(this.currentMonth));
     }
 
     public void Action() {

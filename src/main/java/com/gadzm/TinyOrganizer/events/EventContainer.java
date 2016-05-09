@@ -1,4 +1,5 @@
-package com.gadzm.TinyOrganizer;
+package com.gadzm.TinyOrganizer.events;
+
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -207,5 +208,8 @@ public class EventContainer {
             }
             return temporaryContainer;
         }
+    }
+
+    private class SameDateException extends Exception {
     }
 }

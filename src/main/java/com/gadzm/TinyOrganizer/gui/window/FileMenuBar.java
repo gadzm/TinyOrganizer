@@ -1,4 +1,4 @@
-package com.gadzm.TinyOrganizer;
+package com.gadzm.TinyOrganizer.gui.window;
 
 import static java.awt.event.InputEvent.CTRL_DOWN_MASK;
 

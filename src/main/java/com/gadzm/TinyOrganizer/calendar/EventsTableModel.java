@@ -1,11 +1,12 @@
-package com.gadzm.TinyOrganizer;
+package com.gadzm.TinyOrganizer.calendar;
 
+import com.gadzm.TinyOrganizer.events.Event;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
 import javax.swing.table.AbstractTableModel;
 
-class EventsTableModel extends AbstractTableModel {
+public class EventsTableModel extends AbstractTableModel {
 
     private static final long serialVersionUID = 1L;
     private final SimpleDateFormat addEventDateFormat = new SimpleDateFormat("dd MMM yyyy - HH:mm");

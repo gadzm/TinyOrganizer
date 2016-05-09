@@ -1,4 +1,4 @@
-package com.gadzm.TinyOrganizer;
+package com.gadzm.TinyOrganizer.calendar;
 
 import java.util.ArrayList;
 import java.util.Calendar;

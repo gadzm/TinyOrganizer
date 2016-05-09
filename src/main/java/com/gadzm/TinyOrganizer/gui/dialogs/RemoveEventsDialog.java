@@ -1,5 +1,6 @@
-package com.gadzm.TinyOrganizer;
+package com.gadzm.TinyOrganizer.gui.dialogs;
 
+import com.gadzm.TinyOrganizer.events.EventContainer;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JDialog;
