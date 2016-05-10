@@ -11,17 +11,16 @@ import javax.swing.ToolTipManager;
 
 class EventMenuBar extends JMenu {
 
-    private static final long serialVersionUID = 1L;
     private JMenuItem addEventM;
     private JMenuItem filterEvents;
     private JMenuItem removeEvents;
 
     EventMenuBar() {
         super("Wydarzenia");
-        populateMenu();
+        prepareMenu();
     }
 
-    final public void populateMenu() {
+    final public void prepareMenu() {
         addEventM = new JMenuItem("Dodaj wydarzenie");
         addEventM.setAccelerator(KeyStroke.getKeyStroke('I', CTRL_DOWN_MASK));
         this.add(addEventM);

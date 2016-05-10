@@ -1,6 +1,5 @@
 package com.gadzm.TinyOrganizer.events;
 
-import com.gadzm.TinyOrganizer.events.Event;
 import net.fortuna.ical4j.model.DateTime;
 import net.fortuna.ical4j.model.PropertyList;
 import net.fortuna.ical4j.model.component.VEvent;

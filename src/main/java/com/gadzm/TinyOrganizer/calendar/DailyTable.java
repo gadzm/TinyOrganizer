@@ -11,8 +11,12 @@ public class DailyTable extends JTable {
      *
      */
     private static final long serialVersionUID = 1L;
-
+    
     public DailyTable(JLayeredPane panelDay) {
+        prepareTable(panelDay);
+    }
+    
+    private void prepareTable(JLayeredPane panelDay) {
         setBounds(0, 0, panelDay.getWidth() - 1, panelDay.getHeight() - 1);
         setModel(new TAbleModel());
         setBackground(null);
@@ -22,23 +26,21 @@ public class DailyTable extends JTable {
         setFont(new Font("Arial", Font.BOLD, 12));
         setEnabled(false);
     }
-
+    
     private class TAbleModel extends AbstractTableModel {
 
-        /**
-         *
-         */
+
         private static final long serialVersionUID = 1L;
-
+        
         public int getColumnCount() {
-
+            
             return 2;
         }
-
+        
         public int getRowCount() {
             return 48;
         }
-
+        
         public Object getValueAt(int rowIndex, int columnIndex) {
             if (columnIndex == 1) {
                 return null;

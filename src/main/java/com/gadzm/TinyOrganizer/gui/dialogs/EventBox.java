@@ -15,20 +15,22 @@ import javax.swing.border.EtchedBorder;
 
 public class EventBox extends JLabel {
 
-    /**
-     *
-     */
-    private static final long serialVersionUID = 1L;
-    private Event event;
+    private EventDetailBox detailBox;
+    private final Event event;
     private int x, y, height, width, hourStart, hourEnd, minuteStart, minuteEnd;
-    private int tableHeight, tableWidth;
-    private SimpleDateFormat startFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
-    private SimpleDateFormat endFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+    private final int tableHeight, tableWidth;
+    private final SimpleDateFormat startFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
+    private final SimpleDateFormat endFormat = new SimpleDateFormat("HH:mm", Locale.getDefault());
 
-    public EventBox(Event event, int tableHeight, int tableWidth) {
+    public EventBox(Event event, int tableHeight, int tableWidth, EventDetailBox detailBox) {
+        this.detailBox = detailBox;
         this.tableHeight = tableHeight;
         this.tableWidth = tableWidth;
         this.event = event;
+        prepareDialog();
+    }
+
+    private void prepareDialog() {
         calculateTime();
         calculatePosition();
         calculateDimensions();
@@ -86,6 +88,6 @@ public class EventBox extends JLabel {
     }
 
     private void showEventDetail() {
-        EventDetailBox.fillData(this.event);
+        detailBox.fillData(this.event);
     }
 }

@@ -17,29 +17,29 @@ import java.awt.Font;
 
 public class EventDetailBox extends JPanel {
 
-    /**
-     *
-     */
-    private static final long serialVersionUID = 1L;
-    private static SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
-    private static SimpleDateFormat dateFormat1 = new SimpleDateFormat("HH:mm", Locale.getDefault());
-    private static JTextField textTitle;
-    private static JTextField textStart;
-    private static JTextField textEnd;
-    private static JTextField textRemind;
-    private static JTextField textPlace;
-    private static JTextPane textConent;
-    private static JLabel lblNewLabel;
-    private static JLabel lblNewLabel_1;
-    private static JLabel lblCzasTrwania;
-    private static JLabel lblDataPowiadomienia;
-    private static JLabel lblMiejsce;
-    private static JLabel lblNewLabel_2;
+    private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
+    private final SimpleDateFormat dateFormat1 = new SimpleDateFormat("HH:mm", Locale.getDefault());
+    private JTextField textTitle;
+    private JTextField textStart;
+    private JTextField textEnd;
+    private JTextField textRemind;
+    private JTextField textPlace;
+    private JTextPane textConent;
+    private JLabel lblNewLabel;
+    private JLabel lblNewLabel_1;
+    private JLabel lblCzasTrwania;
+    private JLabel lblDataPowiadomienia;
+    private JLabel lblMiejsce;
+    private JLabel lblNewLabel_2;
 
-    private EventDetailBox(int x, int y) {
-
+    public EventDetailBox(int x, int y) {
         setBounds(x, y, 362, 269);
         setLayout(null);
+        prepareBox();
+        hideContent();
+    }
+
+    private void prepareBox() {
         Border border = BorderFactory.createLineBorder(Color.black);
         setBorder(border);
         lblNewLabel = new JLabel("Tytuł");
@@ -113,14 +113,14 @@ public class EventDetailBox extends JPanel {
         textConent.setBounds(130, 147, 200, 103);
         textConent.setBorder(border);
         add(textConent);
-        EventDetailBox.hideContent();
     }
 
     public static EventDetailBox getEventDetailBox(int x, int y) {
         return new EventDetailBox(x, y);
     }
 
-    static public void fillData(Event event) {
+    public void fillData(Event event) {
+        
         showContent();
         textTitle.setText(event.getTitle());
         textStart.setText(dateFormat.format(event.getEventDate().getTime()));
@@ -134,7 +134,7 @@ public class EventDetailBox extends JPanel {
         textConent.setText(event.getContent());
     }
 
-    static public void hideContent() {
+    public void hideContent() {
         textTitle.setVisible(false);
         textStart.setVisible(false);
         textEnd.setVisible(false);
@@ -149,7 +149,7 @@ public class EventDetailBox extends JPanel {
         lblNewLabel_2.setVisible(false);
     }
 
-    static private void showContent() {
+    private void showContent() {
         textTitle.setVisible(true);
         textStart.setVisible(true);
         textEnd.setVisible(true);

@@ -6,10 +6,10 @@ class CalendarTableModel extends AbstractTableModel {
 
     private static final long serialVersionUID = 1L;
     String[] days = {"Pn", "Wt", "Śr", "Czw", "Pt", "So", "Nd"};
-    private MonthToDisplay month;
+    private final MonthToDisplay month;
 
-    public CalendarTableModel(MonthToDisplay mont) {
-        this.month = mont;
+    public CalendarTableModel(MonthToDisplay month) {
+        this.month = month;
     }
 
     public int getColumnCount() {
@@ -24,11 +24,13 @@ class CalendarTableModel extends AbstractTableModel {
         return month.getDay(row, column);
     }
 
+    @Override
     public String getColumnName(int column) {
         return days[column];
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})
+    @Override
     public Class getColumnClass(int column) {
         return getValueAt(1, column).getClass();
     }

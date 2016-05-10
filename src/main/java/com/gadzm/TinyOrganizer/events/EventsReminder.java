@@ -1,8 +1,6 @@
 package com.gadzm.TinyOrganizer.events;
 
 import com.gadzm.TinyOrganizer.gui.dialogs.RemindDialog;
-import com.gadzm.TinyOrganizer.events.Event;
-import com.gadzm.TinyOrganizer.events.EventContainer;
 import java.util.List;
 import javax.swing.JFrame;
 

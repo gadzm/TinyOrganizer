@@ -32,8 +32,6 @@ import javax.swing.SwingConstants;
 import javax.swing.JFileChooser;
 import javax.swing.ListSelectionModel;
 import javax.swing.border.LineBorder;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ComponentAdapter;
@@ -54,9 +52,8 @@ import org.apache.commons.lang.WordUtils;
 
 public class MainWindow extends JFrame {
 
-    private static final long serialVersionUID = 1L;
     private final List<EventBox> eventOnDay = new ArrayList<EventBox>();
-    private final static MonthToDisplay currentMonth = new MonthToDisplay();
+    private final MonthToDisplay currentMonth = new MonthToDisplay();
     private final SimpleDateFormat calendarDateFormat = new SimpleDateFormat("MMM yyyy");
     private JPanel panelCalendar,
             panelEventTable;
@@ -76,6 +73,7 @@ public class MainWindow extends JFrame {
             btnPreviousYear,
             btnRemoveFilter,
             btnAddEventAt;
+    private EventDetailBox detailBox;
 
     public MainWindow() {
         initialize();
@@ -83,27 +81,23 @@ public class MainWindow extends JFrame {
 
     private void initialize() {
         initLookAndFeel();
-        JFrame jFrame = new JFrame();
+
         setTitle("Kalendarz");
         setBounds(400, 25, 1025, 847);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setResizable(false);
         getContentPane().setLayout(null);
 
-        createMenuBar();
+        prepareMenuBar();
+        preparePanels();
 
-        createPanels();
+        prepareCalendarPanel();
+        prepareCalendar();
+        prepareCalendarNavigation();
 
-        createCalendarPanel();
-
-        createCalendar();
-        createCalendarNavigation();
-
-        createDayEventsPane();
-
-        createEventsPanel();
-
-        createEventsTable();
+        prepareDayEventsPane();
+        prepareEventsPanel();
+        prepareEventsTable();
 
         JPopupMenu eventTablePopUp = new JPopupMenu();
 
@@ -115,20 +109,13 @@ public class MainWindow extends JFrame {
         executor.execute(new EventsReminder(this));
     }
 
-    private void createPanels() {
+    private void preparePanels() {
         tabbedPane = new JTabbedPane(JTabbedPane.TOP);
         tabbedPane.setBounds(0, 0, 1019, 797);
         getContentPane().add(tabbedPane);
-        tabbedPane.addChangeListener(new ChangeListener() {
-            public void stateChanged(ChangeEvent e) {
-                if (tabbedPane.getSelectedIndex() == 1) {
-//                    EventContainer.showAllEvents();
-                }
-            }
-        });
     }
 
-    private void createMenuBar() {
+    private void prepareMenuBar() {
         class CloseAction implements ActionListener {
 
             public void actionPerformed(ActionEvent e) {
@@ -179,10 +166,6 @@ public class MainWindow extends JFrame {
         setJMenuBar(menuBar);
         menuBar.add(fileBar);
         menuBar.add(eventBar);
-//        EventContainer.showAllEvents();
-        /*
-		 * o programie
-         */
         JMenu about = new JMenu("O programie");
         JMenuItem aboutI = new JMenuItem("O programie");
         about.add(aboutI);
@@ -194,9 +177,6 @@ public class MainWindow extends JFrame {
         menuBar.add(about);
     }
 
-    /*
-	 * aktualizacja tablicy zdarzen
-     */
     private void updateTable() {
         this.eventsTable.setModel(new EventsTableModel(EventContainer.GetInstance().getAllEvents()));
     }
@@ -209,12 +189,10 @@ public class MainWindow extends JFrame {
         this.eventsTable.setModel(new EventsTableModel(EventContainer.GetInstance().getAllEvents()));
     }
 
-    /*
-	 * okno dialogowe dodawania zdarzeń
-     */
     private void showdialogAddEvent() {
         AddEventDialog dialog = new AddEventDialog(this);
         dialog.addComponentListener(new ComponentAdapter() {
+            @Override
             public void componentHidden(ComponentEvent e) {
                 updateTable();
             }
@@ -224,6 +202,7 @@ public class MainWindow extends JFrame {
     private void showdialogAddEvent(Calendar date) {
         AddEventDialog dialog = new AddEventDialog(this, date);
         dialog.addComponentListener(new ComponentAdapter() {
+            @Override
             public void componentHidden(ComponentEvent e) {
                 updateTable();
             }
@@ -233,6 +212,7 @@ public class MainWindow extends JFrame {
     private void showRemoveEvent() {
         RemoveEventsDialog dialog = new RemoveEventsDialog(this);
         dialog.addComponentListener(new ComponentAdapter() {
+            @Override
             public void componentHidden(ComponentEvent e) {
                 showAllEvents();
                 updateTable();
@@ -265,7 +245,6 @@ public class MainWindow extends JFrame {
         if (fc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
             try {
                 EventContainer.GetInstance().readFromXML(fc.getSelectedFile());
-
             } catch (IOException e) {
                 JOptionPane.showMessageDialog(getContentPane(), "Proces odczytu z pliku zakonczył się niepowodzeniem", "Błąd odczytu z pliku", JOptionPane.ERROR_MESSAGE);
             }
@@ -284,17 +263,6 @@ public class MainWindow extends JFrame {
         }
     }
 
-    private void createDayEventsPane() {
-        panelDay = new JLayeredPane();
-        panelDay.setBackground(new Color(235, 235, 235));
-        panelDay.setBounds(425, 10, 580, 721);
-        panelDay.setLayout(null);
-        panelCalendar.add(panelDay);
-        tableDayEvent = new DailyTable(panelDay);
-        panelDay.add(tableDayEvent, 1);
-        panelCalendar.add(EventDetailBox.getEventDetailBox(25, 350));
-    }
-
     private void showEventsOnDay(int selecetedCell) {
         clearEventBoxes();
         this.selecetedDate = currentMonth.getDate(selecetedCell);
@@ -306,7 +274,7 @@ public class MainWindow extends JFrame {
     private void createEventBoxes() {
         List<Event> tmp = EventContainer.GetInstance().getEventsOnDay(selecetedDate);
         for (int i = 0; i < tmp.size(); i++) {
-            eventOnDay.add(new EventBox(tmp.get(i), tableDayEvent.getHeight(), tableDayEvent.getWidth()));
+            eventOnDay.add(new EventBox(tmp.get(i), tableDayEvent.getHeight(), tableDayEvent.getWidth(), detailBox));
         }
         putEventBoxes();
     }
@@ -327,7 +295,7 @@ public class MainWindow extends JFrame {
         repaint();
     }
 
-    private void createCalendarPanel() {
+    private void prepareCalendarPanel() {
         panelCalendar = new JPanel();
         tabbedPane.addTab("Kalendarz", null, panelCalendar, null);
         panelCalendar.setLayout(null);
@@ -336,27 +304,28 @@ public class MainWindow extends JFrame {
         panelCalendar.add(calendarScrollPane);
     }
 
-    private void createCalendar() {
+    private void prepareCalendar() {
         calendarTable = new CalendarTable(this.currentMonth);
-        
         calendarScrollPane.setViewportView(calendarTable);
         calendarTable.addMouseListener(new MouseAdapter() {
+            @Override
             public void mouseClicked(MouseEvent e) {
                 int row = calendarTable.rowAtPoint(e.getPoint());
                 int column = calendarTable.columnAtPoint(e.getPoint());
                 btnAddEventAt.setEnabled(false);
-                EventDetailBox.hideContent();
+//                EventDetailBox.hideContent();
                 try {
                     int selectedCell = (Integer) calendarTable.getValueAt(row, column);
                     showEventsOnDay(selectedCell);
                     btnAddEventAt.setEnabled(true);
                 } catch (NullPointerException npe) {
+
                 }
             }
         });
     }
 
-    private void createCalendarNavigation() {
+    private void prepareCalendarNavigation() {
         final CalendarController calContr = new CalendarController(this.calendarTable, this.currentMonth);
 
         btnNextYear = new JButton(">>");
@@ -419,7 +388,7 @@ public class MainWindow extends JFrame {
         });
     }
 
-    private void createEventsPanel() {
+    private void prepareEventsPanel() {
         panelEventTable = new JPanel();
         tabbedPane.addTab("Wydarzenia", null, panelEventTable, null);
         panelEventTable.setLayout(null);
@@ -427,7 +396,7 @@ public class MainWindow extends JFrame {
         eventScrollPane.setBounds(24, 39, 842, 612);
     }
 
-    private void createEventsTable() {
+    private void prepareEventsTable() {
         panelEventTable.add(eventScrollPane);
         eventsTable = new JTable(new EventsTableModel(EventContainer.GetInstance().getAllEvents()));
         eventScrollPane.setViewportView(eventsTable);
@@ -445,7 +414,7 @@ public class MainWindow extends JFrame {
     }
 
     private static void initLookAndFeel() {
-        String lookAndFeel = null;
+        String lookAndFeel;
         lookAndFeel = UIManager.getSystemLookAndFeelClassName();
         try {
             UIManager.setLookAndFeel(lookAndFeel);
@@ -454,8 +423,20 @@ public class MainWindow extends JFrame {
         } catch (Exception e) {
         }
     }
-    
-    public static MonthToDisplay getCurrentMonth(){
+
+    private void prepareDayEventsPane() {
+        panelDay = new JLayeredPane();
+        panelDay.setBackground(new Color(235, 235, 235));
+        panelDay.setBounds(425, 10, 580, 721);
+        panelDay.setLayout(null);
+        panelCalendar.add(panelDay);
+        tableDayEvent = new DailyTable(panelDay);
+        panelDay.add(tableDayEvent, 1);
+        detailBox = new EventDetailBox(25,350);
+        panelCalendar.add(detailBox);
+    }
+
+    public MonthToDisplay getCurrentMonth() {
         return currentMonth;
     }
 }

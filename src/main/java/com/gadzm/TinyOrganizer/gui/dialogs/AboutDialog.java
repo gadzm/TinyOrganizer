@@ -9,6 +9,11 @@ import java.awt.Font;
 public class AboutDialog extends JDialog {
 
     public AboutDialog(JFrame parent) {
+        prepareDialog();
+        setLocationRelativeTo(parent);
+    }
+
+    private void prepareDialog() {
         setTitle("O programie");
         getContentPane().setLayout(null);
 
@@ -39,8 +44,7 @@ public class AboutDialog extends JDialog {
         this.setBounds(200, 100, 350, 180);
         setVisible(true);
         setResizable(false);
-        setLocationRelativeTo(parent);
+
     }
 
-    private static final long serialVersionUID = 1L;
 }

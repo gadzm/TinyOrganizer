@@ -12,7 +12,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 class CalendarTableRenderer extends DefaultTableCellRenderer {
 
     private static final long serialVersionUID = 1L;
-    private MonthToDisplay currentMonth;
+    private final MonthToDisplay currentMonth;
 
     public CalendarTableRenderer(MonthToDisplay month) {
         this.currentMonth = month;

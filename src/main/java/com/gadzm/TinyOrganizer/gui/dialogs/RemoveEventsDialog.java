@@ -19,10 +19,6 @@ import java.util.Locale;
 
 public class RemoveEventsDialog extends JDialog {
 
-    /**
-     *
-     */
-    private static final long serialVersionUID = 1L;
     private final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyyHHmm", Locale.getDefault());
     private JTextField fieldBefore;
     private JTextField fieldAfter;
@@ -32,13 +28,13 @@ public class RemoveEventsDialog extends JDialog {
 
     public RemoveEventsDialog(JFrame parent) {
         super(parent, "Filtruj Wydarzenia");
-        setTitle("Usuń Wydarzenia");
-        this.setVisible(true);
-        this.setResizable(false);
-        prepare(parent);
+
+        prepareDialog(parent);
     }
 
-    private final void prepare(JFrame parent) {
+    private final void prepareDialog(JFrame parent) {
+        setTitle("Usuń Wydarzenia");
+
         this.setBounds(0, 0, 217, 194);
         this.setLocationRelativeTo(parent);
         getContentPane().setLayout(null);
@@ -75,6 +71,9 @@ public class RemoveEventsDialog extends JDialog {
         JLabel lblNewLabel = new JLabel("Podaj daty graniczne (dd/MM/yyyy)");
         lblNewLabel.setBounds(10, 21, 195, 14);
         getContentPane().add(lblNewLabel);
+
+        this.setVisible(true);
+        this.setResizable(false);
     }
 
     private void eventFilter() {

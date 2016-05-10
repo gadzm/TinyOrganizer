@@ -2,8 +2,8 @@ package com.gadzm.TinyOrganizer.calendar;
 
 public class CalendarController {
 
-    private CalendarTable table;
-    private MonthToDisplay currentMonth;
+    private final CalendarTable table;
+    private final MonthToDisplay currentMonth;
     public CalendarController(CalendarTable table, MonthToDisplay currentMonth) {
         this.table = table;
         this.currentMonth = currentMonth;
@@ -21,9 +21,6 @@ public class CalendarController {
         this.table.updateTable();
     }
 
-    /*
-	 * przesuniecie kalendarza o jeden rok
-     */
     public void neighbourYear(boolean dir) {
         this.table.clearSelection();
         if (dir) {

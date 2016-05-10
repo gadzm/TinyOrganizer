@@ -6,15 +6,14 @@ import java.util.GregorianCalendar;
 
 public class Event {
 
-    private String title;
-    private String content;
-    private String place;
-    private Calendar startDate;
-    private Calendar endDate;
+    private final String title;
+    private final String content;
+    private final String place;
+    private final Calendar startDate;
+    private final Calendar endDate;
     private boolean reminder;
     private Calendar reminderDate;
-
-    final private static SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy - HH:mm");
+    private final SimpleDateFormat dateFormat;
 
     static public Event getEventWithRemind(String title, String content, String place, Calendar startDate, Calendar endDate, Calendar remind) {
         return new Event(title, content, place, startDate, endDate, remind);
@@ -28,10 +27,8 @@ public class Event {
         return new Event(e);
     }
 
-    /*
-	 * konstruktor bez przypomnienia
-     */
     private Event(String title, String content, String place, Calendar startDate, Calendar endDate) {
+        this.dateFormat = new SimpleDateFormat("dd MMM yyyy - HH:mm");
         this.startDate = new GregorianCalendar();
         this.startDate.setTime(startDate.getTime());
         this.endDate = new GregorianCalendar();
@@ -42,10 +39,8 @@ public class Event {
         this.reminder = false;
     }
 
-    /*
-	 * konstruktor z przypomnieniem
-     */
     private Event(String title, String content, String place, Calendar startDate, Calendar endDate, Calendar remind) {
+        this.dateFormat = new SimpleDateFormat("dd MMM yyyy - HH:mm");
         this.startDate = new GregorianCalendar();
         this.startDate.setTime(startDate.getTime());
         this.endDate = new GregorianCalendar();
@@ -58,11 +53,8 @@ public class Event {
         this.reminderDate.setTime(remind.getTime());
     }
 
-    public Calendar getEndDate() {
-        return endDate;
-    }
-
     private Event(Event e) {
+        this.dateFormat = new SimpleDateFormat("dd MMM yyyy - HH:mm");
         this.startDate = new GregorianCalendar();
         this.startDate.setTime(e.getEventDate().getTime());
         this.endDate = new GregorianCalendar();
@@ -77,6 +69,10 @@ public class Event {
         } else {
             this.reminder = false;
         }
+    }
+
+    public Calendar getEndDate() {
+        return endDate;
     }
 
     public String getTitle() {
@@ -98,7 +94,7 @@ public class Event {
     @Override
     public String toString() {
         String event;
-        event = Event.dateFormat.format(this.startDate.getTime()) + "\t" + this.title + "\t" + this.place + "\t" + this.content;
+        event = dateFormat.format(this.startDate.getTime()) + "\t" + this.title + "\t" + this.place + "\t" + this.content;
         return event;
     }
 

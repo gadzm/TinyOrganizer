@@ -1,6 +1,6 @@
 package com.gadzm.TinyOrganizer.gui.dialogs;
 
-import com.gadzm.TinyOrganizer.SameDateException;
+import com.gadzm.TinyOrganizer.events.EventContainer.SameDateException;
 import com.gadzm.TinyOrganizer.events.EventContainer;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -27,9 +27,6 @@ import java.awt.Font;
 
 public class AddEventDialog extends JDialog {
 
-    /**
-     *
-     */
     private static final long serialVersionUID = 1L;
     private JTextField fieldTitle;
     private JTextField fieldDate;
@@ -48,28 +45,23 @@ public class AddEventDialog extends JDialog {
     private JTextField fieldDuration;
     private JComboBox<?> durationBox;
 
-    /**
-     * @wbp.parser.constructor
-     */
+
     public AddEventDialog(JFrame parent) {
         super(parent, "Dodaj wydarzenie");
         this.setVisible(true);
         this.setResizable(false);
-        prepare(parent);
+        prepareDialog(parent);
     }
 
-    /*
-	 * konstruktor okna dialogowego po wybraniu daty z kalendarza
-     */
     public AddEventDialog(JFrame parent, Calendar date) {
         super(parent, "Dodaj wydarzenie");
         this.setVisible(true);
         this.setResizable(false);
-        prepare(parent);
+        prepareDialog(parent);
         this.fieldDate.setText(dateFormatPred.format(date.getTime()));
     }
 
-    public final void prepare(JFrame s) {
+    public final void prepareDialog(JFrame s) {
         this.setBounds(400, 200, 400, 309);
         this.setLocationRelativeTo(s);
         getContentPane().setLayout(null);
@@ -133,7 +125,6 @@ public class AddEventDialog extends JDialog {
             public void actionPerformed(ActionEvent arg0) {
                 try {
                     addEvent();
-
                     setVisible(false);
                 } catch (ParseException e) {
                     JOptionPane.showMessageDialog(getContentPane(), "Wprowadzono niepoprawny format daty lub godziny!", "Błąd", JOptionPane.ERROR_MESSAGE);
@@ -213,22 +204,24 @@ public class AddEventDialog extends JDialog {
             try {
                 calculateDuration();
                 EventContainer.GetInstance().addEvent(title, content, place, selectedDate, endDate, calculateRemind());
+                JOptionPane.showMessageDialog(getContentPane(), "Dodano wydarzenie", "Informacja", JOptionPane.INFORMATION_MESSAGE);
             } catch (NumberFormatException ne) {
                 JOptionPane.showMessageDialog(getContentPane(), "Wprowadzono nieprawidłowa wartośc przypomnienia lub czasu trwania wydarzenia", "Błąd", JOptionPane.ERROR_MESSAGE);
             } catch (SameDateException e) {
                 JOptionPane.showMessageDialog(getContentPane(), "W tym czasie jest zaplanowano już inne wydarzenie!", "Błąd", JOptionPane.ERROR_MESSAGE);
             }
-            JOptionPane.showMessageDialog(getContentPane(), "Dodano wydarzenie", "Informacja", JOptionPane.INFORMATION_MESSAGE);
+            
         } else {
             try {
                 calculateDuration();
                 EventContainer.GetInstance().addEvent(title, content, place, selectedDate, endDate);
+                JOptionPane.showMessageDialog(getContentPane(), "Dodano wydarzenie", "Informacja", JOptionPane.INFORMATION_MESSAGE);
             } catch (NumberFormatException ne) {
                 JOptionPane.showMessageDialog(getContentPane(), "Wprowadzono nieprawidłowa wartośc czasu trwania wydarzenia", "Błąd", JOptionPane.ERROR_MESSAGE);
             } catch (SameDateException e) {
                 JOptionPane.showMessageDialog(getContentPane(), "W tym czasie jest zaplanowano już inne wydarzenie!", "Błąd", JOptionPane.ERROR_MESSAGE);
             }
-            JOptionPane.showMessageDialog(getContentPane(), "Dodano wydarzenie", "Informacja", JOptionPane.INFORMATION_MESSAGE);
+            
         }
     }
 

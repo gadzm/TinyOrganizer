@@ -12,7 +12,10 @@ public class CalendarTable extends JTable {
 
     public CalendarTable(MonthToDisplay currentMonth) {
         this.currentMonth = currentMonth;
-        
+        prepareTable();
+    }
+
+    private void prepareTable() {
         setModel(new CalendarTableModel(this.currentMonth));
         setRowSelectionAllowed(false);
         setRowHeight(30);
@@ -21,6 +24,7 @@ public class CalendarTable extends JTable {
         try {
             setDefaultRenderer(Class.forName("java.lang.Integer"), renderer);
         } catch (ClassNotFoundException e1) {
+            
         }
 
         getTableHeader().setReorderingAllowed(false);

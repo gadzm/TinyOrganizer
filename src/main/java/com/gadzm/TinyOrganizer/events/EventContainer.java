@@ -13,25 +13,25 @@ public class EventContainer {
 
     private static EventContainer instance;
 
-    final private static TreeSet<Event> eventSet = new TreeSet<Event>(new EventComp());
+    final private static TreeSet<Event> EVENTSET = new TreeSet<Event>(new EventComp());
     final private List<Event> temporaryContainer = new ArrayList<Event>();
 
     public void addEvent(String title, String content, String place, Calendar startDate, Calendar endDate) throws SameDateException {
 
-        if (!eventSet.add(Event.getEventWithoutRemind(title, content, place, startDate, endDate))) {
+        if (!EVENTSET.add(Event.getEventWithoutRemind(title, content, place, startDate, endDate))) {
             throw new SameDateException();
         }
     }
 
     public void addEvent(String title, String content, String place, Calendar startDate, Calendar endDate, Calendar remind) throws SameDateException {
 
-        if (!eventSet.add(Event.getEventWithRemind(title, content, place, startDate, endDate, remind))) {
+        if (!EVENTSET.add(Event.getEventWithRemind(title, content, place, startDate, endDate, remind))) {
             throw new SameDateException();
         }
     }
 
     public int getSize() {
-        return eventSet.size();
+        return EVENTSET.size();
     }
 
     private EventContainer() {
@@ -47,7 +47,7 @@ public class EventContainer {
     public List<Event> getAllEvents() {
         synchronized (temporaryContainer) {
             temporaryContainer.clear();
-            for (Event event : eventSet) {
+            for (Event event : EVENTSET) {
                 temporaryContainer.add(event);
             }
             return temporaryContainer;
@@ -56,7 +56,7 @@ public class EventContainer {
 
     public List<Event> getEventsBefore(Calendar before) {
         temporaryContainer.clear();
-        for (Event event : eventSet) {
+        for (Event event : EVENTSET) {
             if (event.compareToCalendar(before) < 0) {
                 temporaryContainer.add(event);
             }
@@ -66,7 +66,7 @@ public class EventContainer {
 
     public List<Event> getEventsAfter(Calendar after) {
         temporaryContainer.clear();
-        for (Event event : eventSet) {
+        for (Event event : EVENTSET) {
             if (event.compareToCalendar(after) > 0) {
                 temporaryContainer.add(event);
             }
@@ -76,7 +76,7 @@ public class EventContainer {
 
     public List<Event> getEventsBetween(Calendar before, Calendar after) {
         temporaryContainer.clear();
-        for (Event event : eventSet) {
+        for (Event event : EVENTSET) {
             if (event.compareToCalendar(after) > 0 && event.compareToCalendar(before) < 0) {
                 temporaryContainer.add(event);
             }
@@ -102,7 +102,7 @@ public class EventContainer {
         FileWriter fileWriter;
         fileWriter = new FileWriter(file);
         ObjectOutputStream outputStream = xstream.createObjectOutputStream(fileWriter);
-        for (Event event : eventSet) {
+        for (Event event : EVENTSET) {
             outputStream.writeObject(event);
         }
         outputStream.flush();
@@ -118,7 +118,7 @@ public class EventContainer {
         for (;;) {
             try {
                 Event tmp = (Event) inputStream.readObject();
-                eventSet.add(Event.getEventCopy(tmp));
+                EVENTSET.add(Event.getEventCopy(tmp));
             } catch (ClassNotFoundException e) {
 
             } catch (EOFException e) {
@@ -129,7 +129,7 @@ public class EventContainer {
 
     public void writeICalendar(File file) throws IOException {
         net.fortuna.ical4j.model.Calendar iCal = new net.fortuna.ical4j.model.Calendar();
-        for (Event e : eventSet) {
+        for (Event e : EVENTSET) {
             iCal.getComponents().add(VEventConverter.eventToVEvent(e));
         }
         FileWriter fW = new FileWriter(file);
@@ -150,7 +150,7 @@ public class EventContainer {
         dayEnds.set(Calendar.HOUR_OF_DAY, 23);
         dayEnds.set(Calendar.MINUTE, 59);
 
-        for (Event event : eventSet) {
+        for (Event event : EVENTSET) {
             if (event.getEventDate().compareTo(dayBegins) > 0 && event.getEventDate().compareTo(dayEnds) < 0) {
                 return true;
             }
@@ -160,37 +160,37 @@ public class EventContainer {
 
     public void removeEventsBefore(Calendar before) {
         List<Event> tmp = new ArrayList<Event>();
-        for (Event event : eventSet) {
+        for (Event event : EVENTSET) {
             if (event.compareToCalendar(before) < 0) {
                 tmp.add(event);
             }
         }
         for (int i = 0; i < tmp.size(); i++) {
-            eventSet.remove(tmp.get(i));
+            EVENTSET.remove(tmp.get(i));
         }
     }
 
     public void removeEventsAfter(Calendar after) {
         List<Event> tmp = new ArrayList<Event>();
-        for (Event event : eventSet) {
+        for (Event event : EVENTSET) {
             if (event.compareToCalendar(after) > 0) {
                 tmp.add(event);
             }
         }
         for (int i = 0; i < tmp.size(); i++) {
-            eventSet.remove(tmp.get(i));
+            EVENTSET.remove(tmp.get(i));
         }
     }
 
     public void removeEventsBetween(Calendar after, Calendar before) {
         List<Event> tmp = new ArrayList<Event>();
-        for (Event event : eventSet) {
+        for (Event event : EVENTSET) {
             if (event.compareToCalendar(after) > 0 && event.compareToCalendar(before) < 0) {
                 tmp.add(event);
             }
         }
         for (int i = 0; i < tmp.size(); i++) {
-            eventSet.remove(tmp.get(i));
+            EVENTSET.remove(tmp.get(i));
         }
     }
 
@@ -198,7 +198,7 @@ public class EventContainer {
         synchronized (temporaryContainer) {
             temporaryContainer.clear();
             Calendar currentDate = Calendar.getInstance();
-            for (Event e : eventSet) {
+            for (Event e : EVENTSET) {
                 if (e.isReminded()) {
                     if (e.getReminderDate().before(currentDate) && e.getEventDate().after(currentDate)) {
                         temporaryContainer.add(e);
@@ -210,6 +210,6 @@ public class EventContainer {
         }
     }
 
-    private class SameDateException extends Exception {
+    public class SameDateException extends Exception {
     }
 }

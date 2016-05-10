@@ -15,7 +15,6 @@ import javax.swing.JTextPane;
 
 public class RemindDialog extends JDialog {
 
-    private static final long serialVersionUID = 1L;
     private JTextField textTitle;
     private JTextField textTime;
     private JTextField textPlace;
@@ -27,11 +26,11 @@ public class RemindDialog extends JDialog {
     public RemindDialog(JFrame parent, Event eventToRemind) {
         this.eventToRemind = eventToRemind;
         this.parent = parent;
-        prepare();
+        prepareDialog();
 
     }
 
-    private void prepare() {
+    private void prepareDialog() {
         getContentPane().setLayout(null);
         setTitle("Przypomnienie o zdarzeniu");
         setBounds(400, 200, 283, 211);
